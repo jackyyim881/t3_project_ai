@@ -1,82 +1,90 @@
 import Link from "next/link";
-
-import { CreatePost } from "~/app/_components/create-post";
+import { CreateProduct } from "~/app/_components/create-product";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import Image from "next/image";
+import SideNav from "~/app/_components/SideNavbar";
 
 export default async function Home() {
-  const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
+    <div className="container mx-auto flex ">
+      <div className=" min-h-screen  w-[200px] border-x">
+        <SideNav />
+      </div>
+      <main className=" flex   w-[100%]  flex-col">
+        <div className=" flex items-center justify-between bg-white px-4 py-2 shadow-sm">
+          {session && (
+            <div className="flex items-center">
+              <Image
+                src={session.user?.image ?? "/default-profile.png"}
+                alt="Profile"
+                width={32}
+                height={32}
+                className="mr-2 h-8 w-8 rounded-full"
+              />
+              <span className="font-semibold text-gray-700">
+                Logged in as {session.user?.name}
+              </span>
             </div>
-          </Link>
+          )}
           <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
+            href={session ? "/api/auth/signout" : "/api/auth/signin"}
+            className="ml-10 text-blue-500 transition-colors hover:text-blue-700"
           >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
+            {session ? "Sign out" : "Sign in"}
           </Link>
         </div>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-2xl text-white">
-            {hello ? hello.greeting : "Loading tRPC query..."}
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
-              {session && <span>Logged in as {session.user?.name}</span>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
+        <div className=" p-10">
+          <GetAllProduct />
+          <div className=" ">
+            <CrudCreateProduct />
           </div>
         </div>
-
-        <CrudShowcase />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
-
-async function CrudShowcase() {
+async function CrudCreateProduct() {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
 
-  const latestPost = await api.post.getLatest.query();
+  const latestProduct = await api.product.getLatestProduct.query();
 
   return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
+    <div className="">
+      {latestProduct ? (
+        <p className="truncate">
+          Your most recent product: {latestProduct.name}
+        </p>
       ) : (
-        <p>You have no posts yet.</p>
+        <p>You have no products yet.</p>
       )}
 
-      <CreatePost />
+      <CreateProduct />
+    </div>
+  );
+}
+async function GetAllProduct() {
+  const session = await getServerAuthSession();
+  if (!session?.user) return null;
+
+  const allProducts = await api.product.getAll.query();
+
+  return (
+    <div className=" flex ">
+      {allProducts.length > 0 ? (
+        allProducts.map((product) => (
+          <Link href={`/products/${product.id}`} key={product.id}>
+            <div className="m-4  h-[200px] w-[200px] bg-slate-300">
+              Product: {product.name}
+            </div>
+          </Link>
+        ))
+      ) : (
+        <p>You have no products yet.</p>
+      )}
     </div>
   );
 }

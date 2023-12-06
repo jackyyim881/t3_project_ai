@@ -19,11 +19,19 @@ model Post {
     name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
     createdBy   User   @relation(fields: [createdById], references: [id])
     createdById String
-
     @@index([name])
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  name      String
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy User     @relation(fields: [createdById], references: [id])
+  createdById String
 }
 
 // Necessary for Next auth
@@ -62,6 +70,10 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    products Product[] // This line is new
+    followers User[] @relation("Followers")
+    follows User[] @relation("Followers")    
+
 }
 
 model VerificationToken {
