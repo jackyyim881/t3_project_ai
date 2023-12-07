@@ -4,13 +4,15 @@ import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import Image from "next/image";
 import SideNav from "~/app/_components/SideNavbar";
+import PriceTag from "./_components/PriceTag";
+import ProductName from "./_components/ProductName";
 
 export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
     <div className="container mx-auto flex ">
-      <div className=" min-h-screen  w-[200px] border-x">
+      <div className=" min-h-screen  ms-4   border-r-2">
         <SideNav />
       </div>
       <main className=" flex   w-[100%]  flex-col">
@@ -22,7 +24,7 @@ export default async function Home() {
                 alt="Profile"
                 width={32}
                 height={32}
-                className="mr-2 h-8 w-8 rounded-full"
+                className="mr-2 h-8 w-8 rounded-full ms-3"
               />
               <span className="font-semibold text-gray-700">
                 Logged in as {session.user?.name}
@@ -48,7 +50,7 @@ export default async function Home() {
 }
 async function CrudCreateProduct() {
   const session = await getServerAuthSession();
-  if (!session?.user) return null;
+  if (!session?.user || session?.user.role !== 'admin') return null;
 
   const latestProduct = await api.product.getLatestProduct.query();
 
@@ -72,15 +74,20 @@ async function GetAllProduct() {
 
   const allProducts = await api.product.getAll.query();
 
+
   return (
     <div className=" flex ">
       {allProducts.length > 0 ? (
-        allProducts.map((product) => (
-          <Link href={`/products/${product.id}`} key={product.id}>
-            <div className="m-4  h-[200px] w-[200px] bg-slate-300">
-              Product: {product.name}
-            </div>
-          </Link>
+        allProducts.map((product : any) => (
+        <Link href={`/products/${product.id}`} key={`${product.id}-${product.name}-${product.price}`}>
+        <div className="m-4  p-4 h-[300px] w-[300px] relative  text-white bg-skyBlue-950    rounded-md	">
+            <ProductName name={product.name} />
+            <PriceTag price={product.price} />
+          <button className="bg-blue-500 hover:bg-blue-700 absolute  bottom-5 text-skyBlue-750 font-bold py-2 px-4 rounded">
+        Click Me
+      </button>
+        </div>
+      </Link>
         ))
       ) : (
         <p>You have no products yet.</p>
