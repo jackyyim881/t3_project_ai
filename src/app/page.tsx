@@ -1,3 +1,6 @@
+
+import { useRouter } from 'next/router'
+
 import Link from "next/link";
 import { CreateProduct } from "~/app/_components/create-product";
 import { getServerAuthSession } from "~/server/auth";
@@ -6,10 +9,26 @@ import Image from "next/image";
 import SideNav from "~/app/_components/SideNavbar";
 import PriceTag from "./_components/PriceTag";
 import ProductName from "./_components/ProductName";
+import { RoleAdmin } from './_components/AdminButton';
 
-export default async function Home() {
+export default async function Home( ) {
   const session = await getServerAuthSession();
+  
 
+// const { mutateAsync: setRoleAsAdmin } = api.auth.setRoleAsAdmin.mutate();
+// const { mutateAsync: setRoleAsUser } = api.auth.setRoleAsUser.mutate();
+// const handleSetRoleAsAdmin = async () => {
+//   try {
+//     if (user) {
+//       await api.auth.setRoleAsAdmin.mutate({ userId: user.id });
+//       alert('Role set to admin');
+//     } else {
+//       throw new Error('User is null');
+//     }
+//   } catch (error) {
+//     alert('Failed to set role as admin');
+//   }
+// };
   return (
     <div className="container mx-auto flex ">
       <div className=" min-h-screen  ms-4   border-r-2">
@@ -43,15 +62,102 @@ export default async function Home() {
           <div className=" ">
             <CrudCreateProduct />
           </div>
+       
+          <CheckUserRole />
         </div>
       </main>
     </div>
   );
+// }
+// async function RoleAdmin(){
+//   const session = await getServerAuthSession();
+//   if (!session?.user) return null;
+//   const user = await api.auth.getSession.query({id:session.user.id});
+//   console.log(user);
+// const handleSetRoleAsAdmin = async () => {
+//   try {
+//     if (user) {
+//       await api.auth.setRoleAsAdmin.mutate({ userId: user.id });
+//       alert('Role set to admin');
+//     } else {
+//       throw new Error('User is null');
+//     }
+//   } catch (error) {
+//     alert('Failed to set role as admin');
+//   }
+// };
+
+// const handleSetRoleAsUser = async () => {
+//   try {
+//     if (user) {
+//       await api.auth.setRoleAsBasic.mutate({ userId: user.id });
+//       alert('Role set to user');
+//     } else {
+//       throw new Error('User is null');
+//     }
+//   } catch (error) {
+//     alert('Failed to set role as user');
+//   }
+// };
+//   return (
+//     <div>
+//       <button onClick={handleSetRoleAsAdmin} disabled={false}>
+//         Set role as admin
+//       </button>
+//     </div>
+//   )
 }
+async function CheckUserRole() {
+  const session = await getServerAuthSession();
+  if (!session?.user) return null;
+
+  const user = await api.auth.getSession.query({ id: session.user?.id });
+    return (
+      <>
+
+      {
+        user && user.role === "admin" ? (
+          <RoleAdmin session={session}/>
+        ) : (
+        <RoleAdmin session={session}/>
+        )
+
+
+      }
+      </>
+    );
+    
+    }
+//   if (user.role === "admin") {
+//     // User is an admin
+//     return (
+//       <>
+//         <RoleAdmin session={session} />
+//       </>
+//     );
+//   } else if (user.role === "basic" || user.role === "") {
+//   // User role is "basic" or not defined
+
+//     // User role is not defined
+//     return (
+//       <>
+//         <p>User role is not defined</p>
+//       </>
+      
+//     );
+//   } else {
+//     // User is a basic user
+//     return             <RoleAdmin session={session} />
+
+// ;
+  
+
+
+
 async function CrudCreateProduct() {
   const session = await getServerAuthSession();
   if (!session?.user || session?.user.role !== 'admin') return null;
-
+  
   const latestProduct = await api.product.getLatestProduct.query();
 
   return (
@@ -71,7 +177,7 @@ async function CrudCreateProduct() {
 async function GetAllProduct() {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
-
+  
   const allProducts = await api.product.getAll.query();
 
 

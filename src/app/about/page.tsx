@@ -7,8 +7,7 @@ const AboutPage: React.FC = () => {
       <h1>About Page</h1>
       <p>Welcome to the about page!</p>
       <p className="hyphens-manual">
-    ... Kraftfahrzeug&shy;haftpflichtversicherung is a ...
-</p>
+      </p>
     </div>
     
   );
