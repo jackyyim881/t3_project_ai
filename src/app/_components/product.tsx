@@ -1,4 +1,5 @@
 import { api } from "~/trpc/server";
+import Button from "./Button";
 
 type Product = {
   id: string;
@@ -24,6 +25,8 @@ export default function ProductList({ product , params }: { product: Product , p
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Add to Cart
         </button>
+
+        <Button className=" self-end">Tweet</Button>  
       </div>
     </div>
   );

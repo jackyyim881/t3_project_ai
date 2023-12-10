@@ -39,20 +39,6 @@ export default async function ProductPage({ params: {id} }  : ProductPageProps |
   console.log(products);
 
   return (
-    // <div>
-    //   <h1>Product: {products.name}</h1>
-    //   <p>Price: {products.price}</p>
-    // </div>
     <ProductList product={products} params={id} />
   );  
 }
-
-
-// async function GetProduct({
-//   params: { id },
-// }: {
-//   params: { id: string };
-// }) {
-//   const product = await api.product.getOneProductID.query({id});
-//   return { props: { product } };
-// }

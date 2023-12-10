@@ -1,17 +1,19 @@
-export default function Button({small , className="", disabled, ...props}) {
-    return (
-        <button
-        className={cn(
-            "px-4 py-2 rounded-md text-white font-semibold bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
-            small ? "text-sm" : "text-base",
-            className
-        )}
-        onClick={onClick}
-        disabled={disabled}
-        {...props}
-        >
-        {children}
-        </button>
-    );
-    }
+import type { ButtonHTMLAttributes, DetailedHTMLProps ,  } from "react";
 
+type ButtonProps = {
+    small?: boolean;
+    gray?: boolean;
+    className: string;
+} & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement>;
+
+export default function Button({ small = false , gray = false , className = "", ...props}:ButtonProps){
+    const sizeClasses = small ? "px-2 py-1" : "px-4 py-2 font-bold";
+    const colorClasses = gray ? "bg-gray-500 hover:bg-gray-300 focus-visible:bg-gray-300" :"bg-blue-500 hover:bg-blue-400 focus-visible:bg-blue-400";
+    return (
+        <button 
+            className={` rounded-full text-white transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity:50 ${sizeClasses} ${colorClasses} ${className}`}
+            {...props}
+        />
+        );
+}
