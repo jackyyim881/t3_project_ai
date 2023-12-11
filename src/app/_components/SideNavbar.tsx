@@ -1,8 +1,7 @@
 "use client";
-import React from "react";
 import Link from "next/link";
 
-const SideNav: React.FC = () => {
+export default function SideNav() {
   return (
     <nav className="">
       <ul className="flex p-10 me-10 flex-col">
@@ -14,4 +13,3 @@ const SideNav: React.FC = () => {
   );
 };
 
-export default SideNav;

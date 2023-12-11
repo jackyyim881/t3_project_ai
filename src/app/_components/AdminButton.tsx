@@ -2,14 +2,13 @@
 
 import { api } from "~/trpc/react";
 
-
-export function RoleAdmin({ session , user }: any) {
+export function RoleAdmin({ session }: any) {
   const setRoleAdmin = api.auth.setRoleAsAdmin.useMutation({
     onSuccess: () => {
-      alert('Role set to admin');
+      alert("Role set to admin");
     },
     onError: () => {
-      alert('Failed to set role as admin');
+      alert("Failed to set role as admin");
     },
   });
 
@@ -17,12 +16,12 @@ export function RoleAdmin({ session , user }: any) {
     setRoleAdmin.mutate({ userId: session.user.id });
   };
 
-  const setRoleUser = api.auth.setRoleAsBasic.useMutation({
+  const setRoleUser = api.auth.setRoleAsUser.useMutation({
     onSuccess: () => {
-      alert('Role set to user');
+      alert("Role set to user");
     },
     onError: () => {
-      alert('Failed to set role as user');
+      alert("Failed to set role as user");
     },
   });
 
@@ -32,15 +31,19 @@ export function RoleAdmin({ session , user }: any) {
 
   return (
     <>
-      <button onClick={handleSetRoleAsUser} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <button
+        onClick={handleSetRoleAsUser}
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+      >
         Set role as user
       </button>
 
-      <button onClick={handleSetRoleAsAdmin} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+      <button
+        onClick={handleSetRoleAsAdmin}
+        className="rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+      >
         Set role as admin
       </button>
     </>
   );
 }
-    
-

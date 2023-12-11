@@ -1,9 +1,9 @@
-
 import { notFound } from "next/navigation";
+import SideNav from "~/app/_components/SideNavbar";
 import ProductList from "~/app/_components/product";
 import { api } from "~/trpc/server";
 
-// _components directory has product.tsx/ 
+// _components directory has product.tsx/
 // import ProductList from "~/app/_components/product";
 type Product = {
   id: string;
@@ -14,31 +14,33 @@ type Product = {
   createdById: string;
 };
 
-type ProductProps = {  
-  product: {  
-    id: string;  
-    name: string;  
-    price: number;  
-    // add other product fields you want to use  
-  } | null;  
-};  
+type ProductProps = {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    // add other product fields you want to use
+  } | null;
+};
 
 type ProductPageProps = {
   params: {
     id: string;
   };
 };
-  
 
-
-
-
-export default async function ProductPage({ params: {id} }  : ProductPageProps | any)  {
-  const products =  await api.product.getOneProductID.query({id});
+export default async function ProductPage({
+  params: { id },
+}: ProductPageProps) {
+  const products = await api.product.getOneProductID.query({ id });
   if (!products) notFound();
-  console.log(products);
 
   return (
-    <ProductList product={products} params={id} />
-  );  
+    <div className=" relative mx-auto max-w-[1200px] ">
+      <div className="  absolute h-screen border-r-4 ">
+        <SideNav />
+      </div>
+      <ProductList product={products} params={id} />
+    </div>
+  );
 }

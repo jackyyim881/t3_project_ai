@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -7,41 +7,37 @@ import {
 } from "~/server/api/trpc";
 
 export const authRouter = createTRPCRouter({
-  getSession: protectedProcedure
-    .input(z.object({}))
-    .query(async ({ ctx }) => {
-      if (!ctx.session) {
-        throw new Error("Not authenticated");
-      }
+  getSession: protectedProcedure.input(z.object({})).query(async ({ ctx }) => {
+    if (!ctx.session) {
+      throw new Error("Not authenticated");
+    }
 
-      return ctx.session.user;
+    return ctx.session.user;
+  }),
+
+  setRoleAsAdmin: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.update({
+        where: { id: input.userId },
+        data: {
+          role: "ADMIN",
+        },
+      });
+
+      return user;
     }),
 
- setRoleAsAdmin: protectedProcedure
-  .input(z.object({ userId: z.string() }))
-  .mutation(async ({ ctx, input }) => {
-    const user = await ctx.db.user.update({
-      where: { id: input.userId },
-      data: {
-        isAdmin: true,
-        isUser: false,
-      },
-    });
+  setRoleAsUser: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.update({
+        where: { id: input.userId },
+        data: {
+          role: "USER",
+        },
+      });
 
-    return user;
-  }),
-
-setRoleAsBasic: protectedProcedure
-  .input(z.object({ userId: z.string() }))
-  .mutation(async ({ ctx, input }) => {
-    const user = await ctx.db.user.update({
-      where: { id: input.userId },
-      data: {
-        isAdmin: false,
-        isUser: true,
-      },
-    });
-
-    return user;
-  }),
+      return user;
+    }),
 });

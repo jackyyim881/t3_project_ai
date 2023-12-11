@@ -1,5 +1,7 @@
 import { api } from "~/trpc/server";
 import Button from "./Button";
+import NewFormProduct from "./NewFormProduct";
+import ProfileImage from "./ProfileImage";
 
 type Product = {
   id: string;
@@ -10,24 +12,38 @@ type Product = {
   createdById: string;
 };
 
-export default function ProductList({ product , params }: { product: Product , params: any }) {  
-      return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold mb-4">Cool Product Page</h1>
-      <div className="max-w-md bg-white shadow-md rounded-lg p-6">
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold">Product Name : {product.name}</h2>
-          <p className="text-gray-500 text-sm">Price: {product.price}</p>
-          product id : {params}
-        </div>
-        <img src="/path/to/product-image.jpg" alt="Product Image" className="w-full mb-4" />
-        {/* Add to cart button */}
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Add to Cart
-        </button>
+export default function ProductList({
+  product,
+  params,
+}: {
+  product: Product;
+  params: string;
+}) {
+  return (
+    <main className="mx-auto grid h-screen max-w-lg grid-cols-2 items-center gap-20 ">
+      <div className="flex flex-col items-center justify-self-end">
+        <h1 className="mb-4 text-2xl font-bold">Cool Product Page</h1>
+        <div className="max-w-md rounded-lg bg-white p-6 shadow-md">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold">
+              Product Name : {product.name}
+            </h2>
+            <p className="text-sm text-gray-500">Price: {product.price}</p>
+            product id : {params}
+          </div>
 
-        <Button className=" self-end">Tweet</Button>  
+          <div className="flex space-x-2">
+            <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+              Add to Cart
+            </button>
+            <Button className="self-end">Tweet</Button>
+          </div>
+        </div>
       </div>
-    </div>
+      <div className="justify-self-start ">
+        <ProfileImage width={100} height={200} />
+        <NewFormProduct />
+      </div>
+    </main>
   );
-};
+}

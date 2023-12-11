@@ -9,6 +9,10 @@ import DiscordProvider from "next-auth/providers/discord";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
+enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -19,15 +23,15 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      role : 'admin' | 'basic' | '';
-      // ...other properties
+      role: UserRole | string;
     } & DefaultSession["user"];
   }
 
-  interface User {
-    // ...other properties
-       role: 'admin' | 'basic' | '';
-  }
+  // interface User {
+  //   isAdmin: boolean;
+  //   isUser: boolean;
+  //   // ...other properties
+  // }
 }
 
 /**
