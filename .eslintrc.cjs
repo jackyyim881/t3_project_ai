@@ -19,10 +19,11 @@ const config = {
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unsafe-return": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/restrict-plus-operands": "off",
-
+    "@typescript-eslint/no-unsafe-enum-comparison": "error",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
