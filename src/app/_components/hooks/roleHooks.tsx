@@ -10,6 +10,7 @@ export async function CheckUserRole() {
   if (session?.user?.role !== "ADMIN") {
     return null;
   }
+
   return (
     <div className="flex items-center justify-center">
       <RoleAdmin session={session} />

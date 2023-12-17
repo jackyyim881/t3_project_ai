@@ -31,10 +31,12 @@ export const env = createEnv({
     // Add ` on ID and SECRET if you want to make sure they're not empty
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
-    // AZURE_OPENAI_API_KEY: z.string(),
-    // AZURE_OPENAI_API_VERSION: z.string(),
-    // AZURE_OPENAI_API_INSTANCE_NAME: z.string(),
-    // AZURE_OPENAI_API_DEPLOYMENT_NAME: z.string(),
+    GCP_PROJECT_ID: z.string(),
+    GCP_LOCATION: z.string(),
+    API_ENDPOINT: z.string(),
+    PROJECT_ID: z.string(),
+    MODEL_ID: z.string(),
+    LOCATION_ID: z.string(),
   },
 
   /**
@@ -57,11 +59,12 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-    // AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY,
-    // AZURE_OPENAI_API_VERSION: process.env.AZURE_OPENAI_API_VERSION,
-    // AZURE_OPENAI_API_INSTANCE_NAME: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
-    // AZURE_OPENAI_API_DEPLOYMENT_NAME:
-    //   process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
+    GCP_PROJECT_ID: process.env.GCP_PROJECT_ID,
+    GCP_LOCATION: process.env.GCP_LOCATION,
+    API_ENDPOINT: process.env.API_ENDPOINT,
+    PROJECT_ID: process.env.PROJECT_ID,
+    MODEL_ID: process.env.MODEL_ID,
+    LOCATION_ID: process.env.LOCATION_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -1,10 +1,6 @@
 "use client";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { FavouriteButton } from "./FavouriteBtn";
-import ProfileImage from "./ProfileImage";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { api } from "~/trpc/server";
-import { useSession } from "next-auth/react";
+import FavouriteButton from "./FavouriteBtn";
 
 function updateTextAreaSize(textArea?: HTMLTextAreaElement) {
   if (textArea == null) return;
@@ -12,7 +8,7 @@ function updateTextAreaSize(textArea?: HTMLTextAreaElement) {
   textArea.style.height = `${textArea.scrollHeight}px`;
 }
 
-export default function NewFormProduct() {
+export function NewFormProduct() {
   const textAreaRef = useRef<HTMLTextAreaElement>();
   const [isFavourite, setIsFavourite] = useState(false);
 
@@ -21,10 +17,7 @@ export default function NewFormProduct() {
     updateTextAreaSize(textArea);
     textAreaRef.current = textArea;
   }, []);
-  // const btnAreaRef = useRef<HTMLButtonElement>();
-  // const btnRef = useCallback((btnArea: HTMLButtonElement) => {
-  //   btnAreaRef.current = btnArea;
-  // }, []);
+
   useLayoutEffect(() => {
     updateTextAreaSize(textAreaRef.current);
   }, [inputValue]);
@@ -46,8 +39,13 @@ export default function NewFormProduct() {
         />
       </div>
       <div>
-        <FavouriteButton onClick={handleFavouriteClick} size={20}>
-          Favourite
+        <FavouriteButton
+          onClick={handleFavouriteClick}
+          size={20}
+          productId="dummyProductId"
+          session="dummySession"
+        >
+          Like Button
         </FavouriteButton>
       </div>
     </form>

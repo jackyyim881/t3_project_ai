@@ -1,30 +1,15 @@
 import Link from "next/link";
-import { CreateProduct } from "~/app/_components/create-product";
 import { getServerAuthSession } from "~/server/api/auth";
 import { api } from "~/trpc/server";
-import Image from "next/image";
-import dynamic from "next/dynamic";
-
 import SideNav from "~/app/_components/SideNavbar";
 import PriceTag from "./_components/PriceTag";
 import ProductName from "./_components/ProductName";
-// import { RoleAdmin } from "./_components/AdminButton";
 import { CheckUserRole } from "./_components/hooks/roleHooks";
 import ProfileImage from "./_components/ProfileImage";
 
-type ControlRole = {
-  session: any;
-};
-
-type SetRoleMutationConfig = {
-  onSuccess: () => void;
-  onError: () => void;
-};
-
 export default async function Home() {
   const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
+  // refresh the router by using the checkuserrole
   return (
     <div className="container mx-auto flex  ">
       <div className=" ms-4  min-h-screen   border-r-2">
@@ -37,10 +22,17 @@ export default async function Home() {
         </div>
         <CheckUserRole />
       </div>
-      {/* <TestRole /> */}
     </div>
   );
 }
+// type ControlRole = {
+//   session: any;
+// };
+
+// type SetRoleMutationConfig = {
+//   onSuccess: () => void;
+//   onError: () => void;
+// };
 // <div className="  flex items-center justify-between px-4 py-2 text-black shadow-sm">
 //   {session && (
 //     <div className="flex items-center">
@@ -76,51 +68,38 @@ export default async function Home() {
 //     );
 //   }
 // }
-async function TestRole() {
-  const Button = dynamic(() => import("./_components/hooks/ButtonHooks"), {
-    ssr: false,
-  });
 
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-  const setRoleAdmin = api.auth.setRoleAsAdmin.mutate({
-    userId: session.user.id,
-  });
+// async function TestRole() {
+//   const session = await getServerAuthSession();
+//   if (!session?.user) return null;
+//   const setRoleAdmin = api.auth.setRoleAsAdmin.mutate({
+//     userId: session.user.id,
+//   });
 
-  const setRoleUser = api.auth.setRoleAsUser.mutate({
-    userId: session.user.id,
-  });
+//   const setRoleUser = api.auth.setRoleAsUser.mutate({
+//     userId: session.user.id,
+//   });
 
-  const handleSetRoleAsAdmin = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setRoleAdmin.mutate({ userId: session.user.id });
-  };
-
-  const handleSetRoleAsUser = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setRoleUser.mutate({ userId: session.user.id });
-  };
-
-  return (
-    <>
-      <div className=" absolute">
-        <h2 className="text-2xl font-bold">Set role</h2>
-        <Button
-          onClick={handleSetRoleUser}
-          className="rounded bg-blue-500 px-4 py-2 font-bold text-black hover:bg-blue-700"
-        >
-          User
-        </Button>
-        <Button
-          onClick={handleSetRoleAdmin}
-          className="rounded bg-blue-500 px-4 py-2 font-bold text-black hover:bg-blue-700"
-        >
-          Admin
-        </Button>
-      </div>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <div className=" absolute">
+//         <h2 className="text-2xl font-bold">Set role</h2>
+//         <button
+//           onClick={setRoleAdmin}
+//           className="rounded bg-blue-500 px-4 py-2 font-bold text-black hover:bg-blue-700"
+//         >
+//           User
+//         </button>
+//         <button
+//           onClick={setRoleUser}
+//           className="rounded bg-blue-500 px-4 py-2 font-bold text-black hover:bg-blue-700"
+//         >
+//           Admin
+//         </button>
+//       </div>
+//     </>
+//   );
+// }
 
 // async function CrudCreateProduct() {
 //   const latestProduct = await api.product.getLatestProduct.query();

@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
 type RoleButtonProps = {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
@@ -27,29 +28,15 @@ export const RoleButton: React.FC<{
 );
 
 export function RoleAdmin({ session }: any) {
-  // const setRoleAdmin = api.auth.setRoleAsAdmin.useMutation({
-  //   onSuccess: () => {
-  //     alert("Role set to admin");
-  //   },
-  //   onError: () => {
-  //     alert("Failed to set role as admin");
-  //   },
-  // });
-  // const setRoleUser = api.auth.setRoleAsUser.useMutation({
-  //   onSuccess: () => {
-  //     alert("Role set to user");
-  //   },
-  //   onError: () => {
-  //     alert("Failed to set role as user");
-  //   },
-  // });
-
+  const router = useRouter();
   const createSetRoleMutation = (role: Role): SetRoleMutationConfig => ({
     onSuccess: () => {
       alert(`Role set to ${role}`);
+      router.refresh();
     },
     onError: () => {
       alert(`Failed to set role as ${role}`);
+      router.refresh();
     },
   });
 

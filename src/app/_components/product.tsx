@@ -1,8 +1,8 @@
 import { api } from "~/trpc/server";
 import Button from "./Button";
-import NewFormProduct from "./NewFormProduct";
+import { NewFormProduct } from "./NewFormProduct";
 import ProfileImage from "./ProfileImage";
-
+import { getServerAuthSession } from "~/server/api/auth";
 type Product = {
   id: string;
   name: string;
@@ -12,13 +12,15 @@ type Product = {
   createdById: string;
 };
 
-export default function ProductList({
+export default async function ProductList({
   product,
   params,
 }: {
   product: Product;
   params: string;
 }) {
+  const session = await getServerAuthSession();
+
   return (
     <main className="mx-auto grid h-screen max-w-lg grid-cols-2 items-center gap-20 ">
       <div className="flex flex-col items-center justify-self-end">
@@ -41,7 +43,7 @@ export default function ProductList({
         </div>
       </div>
       <div className="justify-self-start ">
-        <ProfileImage width={100} height={200} />
+        <ProfileImage session={session} width={100} height={200} />
         <NewFormProduct />
       </div>
     </main>

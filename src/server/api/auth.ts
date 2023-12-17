@@ -12,6 +12,7 @@ import { env } from "~/env";
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
 import { UserRole } from "@prisma/client";
+import { GoogleVertexAI } from "langchain/llms/googlevertexai";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -75,6 +76,7 @@ export const authOptions: NextAuthOptions = {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
+
     /**
      * ...add more providers here.
      *
