@@ -1,10 +1,8 @@
 import { getServerAuthSession } from "~/server/api/auth";
 import { RoleAdmin } from "../AdminButton";
 import { CrudCreateProduct } from "../CreateProductTable";
+import { Card } from "~/@/components/ui/card";
 
-type Role = {
-  role: "ADMIN" | "USER";
-};
 export async function CheckUserRole() {
   const session = await getServerAuthSession();
   if (session?.user?.role !== "ADMIN") {
@@ -12,9 +10,9 @@ export async function CheckUserRole() {
   }
 
   return (
-    <div className="flex items-center justify-center">
+    <Card className="m-2 max-w-[400px]   p-4">
       <RoleAdmin session={session} />
       <CrudCreateProduct />
-    </div>
+    </Card>
   );
 }

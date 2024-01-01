@@ -32,7 +32,8 @@ model Product {
   updatedAt DateTime @updatedAt
   createdBy User     @relation(fields: [createdById], references: [id])
   createdById String
-  likes     Like[]   // Removed @relation attribute here
+  likes      Like[]
+  likesCount Int      @default(0) // Added likesCount field here
 }
 
 model Like {
@@ -44,6 +45,7 @@ model Like {
   product   Product  @relation(fields: [productId], references: [id])
   productId String @unique
 }
+
 
 // Necessary for Next auth
 model Account {

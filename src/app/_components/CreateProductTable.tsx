@@ -1,11 +1,12 @@
 import { api } from "~/trpc/server";
 import { CreateProduct } from "./create-product";
+import { Card } from "~/@/components/ui/card";
 
 export async function CrudCreateProduct() {
   const latestProduct = await api.product.getLatestProduct.query();
   return (
     <>
-      <section className="grow">
+      <div className="">
         {latestProduct ? (
           <p className="truncate">
             Your most recent product: {latestProduct.name}
@@ -14,7 +15,7 @@ export async function CrudCreateProduct() {
           <p>You have no products yet.</p>
         )}
         <CreateProduct />
-      </section>
+      </div>
     </>
   );
 }

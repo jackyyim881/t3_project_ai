@@ -46,19 +46,6 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => {
-      // get API role from user prisma model
-      // const userWithRole = api.auth.getSession.query({
-      //   where: { id: user.id },
-      //   select: { role: true },
-      // });
-      // if (userWithRole?.role === UserRole.ADMIN) {
-      //   console.log("The user is an admin");
-      // } else if (userWithRole?.role === UserRole.USER) {
-      //   console.log("The user is a regular user");
-      // } else {
-      //   console.log("The user role is unknown");
-      // }
-
       return {
         ...session,
 

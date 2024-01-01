@@ -3,28 +3,29 @@ import Image from "next/image";
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/api/auth";
 
-type ProfileImageProps = {
-  width: number;
-  height: number;
-};
 type SessionProps = {
   session: any;
 };
 
+type ImageSize = {
+  width?: number;
+  height?: number;
+};
+
 export default async function ProfileImage({
+  session,
   width,
   height,
-  session,
-}: ProfileImageProps & SessionProps) {
+}: SessionProps & ImageSize) {
   return (
-    <div className="  flex items-center justify-between px-4 py-2 text-black shadow-sm">
+    <div className="flex w-full items-center justify-between border-b-2 px-4 py-2 text-black">
       {session && (
         <div className="flex items-center">
           <Image
             src={session.user?.image ?? "/default-profile.png"}
             alt="Profile"
-            width={32}
-            height={32}
+            width={width}
+            height={height}
             className="mr-2 ms-3 h-8 w-8 rounded-full"
           />
           <span className="font-semibold text-gray-700">

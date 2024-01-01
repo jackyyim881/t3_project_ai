@@ -1,14 +1,13 @@
+import { CardTitle } from "~/@/components/ui/card";
 
 type NameProps = {
-    name: string;
-    };
-
-export default function ProductName( {name } : NameProps)  {
-    
-    return (
-       <div className="">
-              <span className="">{name}</span>  
-       </div>
-    );
+  name: string;
 };
 
+export default function ProductName({ name }: NameProps) {
+  return (
+    <CardTitle>
+      <span className="">{name}</span>
+    </CardTitle>
+  );
+}

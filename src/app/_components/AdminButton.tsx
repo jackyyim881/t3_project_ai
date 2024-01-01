@@ -2,6 +2,7 @@
 
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
+import { Card } from "~/@/components/ui/card";
 type RoleButtonProps = {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
@@ -58,22 +59,24 @@ export function RoleAdmin({ session }: any) {
   };
   return (
     <>
-      <h2 className="text-2xl font-bold">Set role</h2>
-      <RoleButton
-        onClick={handleSetRoleAsUser}
-        color="blue-500"
-        hoverColor="blue-700"
-      >
-        Set role as user
-      </RoleButton>
+      <div>
+        <h2 className="text-2xl font-bold">Set role</h2>
+        <RoleButton
+          onClick={handleSetRoleAsUser}
+          color="blue-500"
+          hoverColor="blue-700"
+        >
+          Set role as user
+        </RoleButton>
 
-      <RoleButton
-        onClick={handleSetRoleAsAdmin}
-        color="green-500"
-        hoverColor="blue-700"
-      >
-        Set role as admin
-      </RoleButton>
+        <RoleButton
+          onClick={handleSetRoleAsAdmin}
+          color="green-500"
+          hoverColor="blue-700"
+        >
+          Set role as admin
+        </RoleButton>
+      </div>
     </>
   );
 }

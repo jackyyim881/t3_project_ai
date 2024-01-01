@@ -8,7 +8,7 @@ function updateTextAreaSize(textArea?: HTMLTextAreaElement) {
   textArea.style.height = `${textArea.scrollHeight}px`;
 }
 
-export function NewFormProduct() {
+export function NewFormProduct({ productId }: any) {
   const textAreaRef = useRef<HTMLTextAreaElement>();
   const [isFavourite, setIsFavourite] = useState(false);
 
@@ -24,6 +24,9 @@ export function NewFormProduct() {
   const handleFavouriteClick = () => {
     setIsFavourite(!isFavourite);
   };
+  //fetch productId from the product page
+  console.log(productId);
+
   return (
     <form className="relative flex flex-col gap-2  px-4 py-2">
       <h1>Discuss Form</h1>
@@ -39,14 +42,7 @@ export function NewFormProduct() {
         />
       </div>
       <div>
-        <FavouriteButton
-          onClick={handleFavouriteClick}
-          size={20}
-          productId="dummyProductId"
-          session="dummySession"
-        >
-          Like Button
-        </FavouriteButton>
+        <FavouriteButton productId={productId}>Like Button</FavouriteButton>
       </div>
     </form>
   );

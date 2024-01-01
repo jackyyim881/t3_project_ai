@@ -1,8 +1,15 @@
 import { api } from "~/trpc/server";
-import Button from "./Button";
+// import Button from "./Button";
 import { NewFormProduct } from "./NewFormProduct";
 import ProfileImage from "./ProfileImage";
 import { getServerAuthSession } from "~/server/api/auth";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/@/components/ui/card";
+import { Button } from "~/@/components/ui/button";
 type Product = {
   id: string;
   name: string;
@@ -12,40 +19,41 @@ type Product = {
   createdById: string;
 };
 
+type ProductListProps = {
+  product: Product;
+  params: string;
+};
 export default async function ProductList({
   product,
   params,
-}: {
-  product: Product;
-  params: string;
-}) {
+}: ProductListProps) {
   const session = await getServerAuthSession();
-
+  const products = await api.product.getOneProductID.query({ id: params });
   return (
-    <main className="mx-auto grid h-screen max-w-lg grid-cols-2 items-center gap-20 ">
-      <div className="flex flex-col items-center justify-self-end">
-        <h1 className="mb-4 text-2xl font-bold">Cool Product Page</h1>
+    <main className="mx-auto grid min-h-screen  grid-cols-2 items-center gap-20 ">
+      <Card className="flex max-w-md flex-col items-center justify-self-end">
+        <CardHeader className="mt-4 text-2xl font-bold">
+          Cool Product Page
+        </CardHeader>
         <div className="max-w-md rounded-lg bg-white p-6 shadow-md">
-          <div className="mb-4">
-            <h2 className="text-2xl font-bold">
-              Product Name : {product.name}
-            </h2>
-            <p className="text-sm text-gray-500">Price: {product.price}</p>
-            product id : {params}
-          </div>
+          <CardTitle className="text-2xl font-bold">
+            Product Name : {product.name}
+          </CardTitle>
+          <CardDescription className="text-sm ">
+            Price: {product.price}
+          </CardDescription>
+          <CardDescription>product id : {params}</CardDescription>
 
-          <div className="flex space-x-2">
-            <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-              Add to Cart
-            </button>
-            <Button className="self-end">Tweet</Button>
+          <div className="mt-10 flex w-[full] justify-between">
+            <Button>Add to Cart</Button>
+            <Button>Tweet</Button>
           </div>
         </div>
-      </div>
-      <div className="justify-self-start ">
-        <ProfileImage session={session} width={100} height={200} />
-        <NewFormProduct />
-      </div>
+      </Card>
+      <Card className="justify-self-start ">
+        <ProfileImage session={session} width={30} height={20} />
+        <NewFormProduct productId={products} />{" "}
+      </Card>
     </main>
   );
 }
