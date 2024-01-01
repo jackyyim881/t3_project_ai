@@ -16,9 +16,8 @@ type SetLikeMutationConfig = {
 };
 
 type Product = {
-  productId: any;
+  productId: Products;
   // call Products
-  products: Products;
   product: Product;
 };
 type Products = {
@@ -32,8 +31,7 @@ type Products = {
 export default function FavouriteButton({
   children,
   productId,
-  product,
-}: FavoriteButtonProps & Product & Products) {
+}: FavoriteButtonProps & Product) {
   //productId
 
   const router = useRouter();
@@ -70,18 +68,20 @@ export default function FavouriteButton({
   //   },
   // });
   // likeProductMutation like product
-  const likeProductMutation = api.like.userLikeProduct.useMutation({
-    onSuccess: () => {
-      setIsFavourite(true); // Update the isFavourite state here
-      alert(`Product liked successfully`);
-      router.refresh();
-    },
-    onError: () => {
-      alert(`Failed to like the product`);
-      router.refresh();
-    },
-  });
+  // const likeProductMutation = api.like.toggleLike.useMutation({
+  //   onSuccess: () => {
+  //     setIsFavourite(true); // Update the isFavourite state here
+  //     alert(`Product liked successfully`);
+  //     router.refresh();
+  //   },
+  //   onError: () => {
+  //     alert(`Failed to like the product`);
+  //     router.refresh();
+  //   },
+  // });
+  const toggleLike = api.like.toggleLike.useMutation();
 
+  // Somewhere in your code where you call the mutation
   // const handleLikeProduct = (event: React.MouseEvent<HTMLButtonElement>) => {
   //   event.stopPropagation();
   //   event.preventDefault();
@@ -95,11 +95,36 @@ export default function FavouriteButton({
   //   }
   // };
 
+  // const handleLikeProduct = async (event: any) => {
+  //   event.preventDefault();
+  //   try {
+  //     setIsFavourite(!isFavourite);
+  //     const actualProductId = productId.id;
+
+  //     if (!actualProductId) {
+  //       throw new Error("Product ID is undefined");
+  //     }
+
+  //     const response = await toggleLike.mutateAsync({
+  //       productId: actualProductId,
+  //     });
+  //     console.log(response);
+  //     setIsFavourite(response.addedLike);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   const handleLikeProduct = async (event: any) => {
     event.preventDefault();
-    setIsFavourite(!isFavourite);
-    console.log(productId);
-    likeProductMutation.mutate({ productId: productId.productId });
+    try {
+      const response = await toggleLike.mutateAsync({
+        productId: productId.id,
+      });
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
